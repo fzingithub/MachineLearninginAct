@@ -36,18 +36,20 @@ def trainNB0(trainMatrix,trainCategory):
     numTrainDocs = len(trainMatrix) #6
     numWords = len(trainMatrix[0]) #32
     pAbusive = sum(trainCategory)/float(numTrainDocs)  #3/6=0.5
-    p0Num = np.ones(numWords); p1Num = np.ones(numWords)      #change to ones() #32个1 Laplace smoothing
+    p0Num = np.ones(numWords); p1Num = np.ones(numWords)     #change to ones() #32个1 Laplace smoothing
 #    print (p0Num,p1Num)
     p0Denom = 2.0; p1Denom = 2.0                        #change to 2.0 laplace smoothing
     for i in range(numTrainDocs):#6
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
-            p1Denom += sum(trainMatrix[i])
+#            p1Denom += sum(trainMatrix[i])
+            p1Denom += 1
         else:
             p0Num += trainMatrix[i]
-            p0Denom += sum(trainMatrix[i])
-        print (p0Num,p1Num,p0Denom,p1Denom)
+#            p0Denom += sum(trainMatrix[i])
+            p0Denom += 1
+#        print (p0Num,p1Num,p0Denom,p1Denom)
     p1Vect = np.log(p1Num/p1Denom)          #change to log()  avoid underflow
     p0Vect = np.log(p0Num/p0Denom)          #change to log()
-    print (p1Vect,p0Vect)
+#    print (p1Vect,p0Vect)
     return p0Vect,p1Vect,pAbusive
