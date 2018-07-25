@@ -42,14 +42,63 @@ def trainNB0(trainMatrix,trainCategory):
     for i in range(numTrainDocs):#6
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
-#            p1Denom += sum(trainMatrix[i])
-            p1Denom += 1
+            p1Denom += sum(trainMatrix[i])    #bag of words model (multinomial event model(Andrew Ng))  
+#            p1Denom += 1  #set of words model (multi-variate Bernoulli event model(Andrew Ng))
         else:
             p0Num += trainMatrix[i]
-#            p0Denom += sum(trainMatrix[i])
-            p0Denom += 1
+            p0Denom += sum(trainMatrix[i]) #bag of words model (multinomial event model(Andrew Ng))  
+#            p0Denom += 1 #set of words model (multi-variate Bernoulli event model(Andrew Ng))
 #        print (p0Num,p1Num,p0Denom,p1Denom)
     p1Vect = np.log(p1Num/p1Denom)          #change to log()  avoid underflow
     p0Vect = np.log(p0Num/p0Denom)          #change to log()
 #    print (p1Vect,p0Vect)
     return p0Vect,p1Vect,pAbusive
+
+def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
+    p1 = sum(vec2Classify * p1Vec) + np.log(pClass1)    #element-wise mult
+    p0 = sum(vec2Classify * p0Vec) + np.log(1.0 - pClass1)
+    if p1 > p0:
+        return 1
+    else: 
+        return 0
+    
+def testingNBsetOfwords():#convenience function
+    listOPosts,listClasses = loadDataSet()      #feature list and label list
+    myVocabList = createVocabList(listOPosts)   #generate vocabulary
+    trainMat=[]
+    for postinDoc in listOPosts:                #genrate feature (0 not exist or 1 exsit) list
+        trainMat.append(setOfWords2Vec(myVocabList, postinDoc))  #differance
+    p0V,p1V,pAb = trainNB0(np.array(trainMat),np.array(listClasses))  #generate tarining parametres 
+    
+    testEntry = ['love', 'my', 'dalmation','to','dog','part','yes']   #test classficition sample 1
+    thisDoc = np.array(setOfWords2Vec(myVocabList, testEntry))
+    print ("thisdoc featrue vector:",thisDoc)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
+    testEntry = ['stupid', 'garbage', 'conveninence'] #test classficition sample 2
+    thisDoc = np.array(setOfWords2Vec(myVocabList, testEntry))
+    print ("thisdoc featrue vector:",thisDoc)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
+    
+def bagOfWords2VecMN(vocabList, inputSet):
+    returnVec = [0]*len(vocabList)
+    for word in inputSet:
+        if word in vocabList:
+            returnVec[vocabList.index(word)] += 1
+    return returnVec
+
+def testingNBbagofwords():#convenience function
+    listOPosts,listClasses = loadDataSet()      #feature list and label list
+    myVocabList = createVocabList(listOPosts)   #generate vocabulary
+    trainMat=[]
+    for postinDoc in listOPosts:                #genrate feature (0 not exist or 1 exsit) list
+        trainMat.append(bagOfWords2VecMN(myVocabList, postinDoc))  #differiance
+    p0V,p1V,pAb = trainNB0(np.array(trainMat),np.array(listClasses))  #generate tarining parametres 
+    
+    testEntry = ['love', 'my', 'dalmation','to','dog','part','yes']   #test classficition sample 1
+    thisDoc = np.array(bagOfWords2VecMN(myVocabList, testEntry))
+    print ("thisdoc featrue vector:",thisDoc)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
+    testEntry = ['stupid', 'garbage', 'conveninence','stupid'] #test classficition sample 2
+    thisDoc = np.array(bagOfWords2VecMN(myVocabList, testEntry))
+    print ("thisdoc featrue vector:",thisDoc)
+    print (testEntry,'classified as: ',classifyNB(thisDoc,p0V,p1V,pAb))
