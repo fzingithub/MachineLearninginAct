@@ -12,11 +12,11 @@ import naiveBayes
 listOPosts , listClasses = naiveBayes.loadDataSet()
 myVocabList = naiveBayes.createVocabList(listOPosts)
 
-print ("文档模型总词表：",myVocabList) #vocabulary
+print ("Vocubulary：",myVocabList) #vocabulary
 
 wordVec = naiveBayes.setOfWords2Vec(myVocabList,listOPosts[0])
 
-print ("测试文档词向量：",wordVec)
+print ("test word vector：",wordVec)
 
 trainMat = []
 
@@ -25,10 +25,10 @@ for postinDoc in listOPosts:
     
 p0V,p1V,PAb = naiveBayes.trainNB0(trainMat,listClasses)
 
-print ("词表元素对0类的概率贡献值向量:",p0V)
-print ("词表元素对1类的概率贡献值向量:",p1V)
-print ("文档为0类概率",1-PAb)
-print ("文档为1类概率",PAb)
+print ("Probability vector for 0 classification:",p0V)
+print ("Probability vector for 1 classification:",p1V)
+print ("Probability of being 0 classification:",1-PAb)
+print ("Probability of being 1 classification",PAb)
 
 print ("set of words models:=====================================================")
 naiveBayes.testingNBsetOfwords()
