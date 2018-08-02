@@ -35,10 +35,10 @@ def setOfWords2Vec(vocabList, inputSet):
 def trainNB0(trainMatrix,trainCategory):
     numTrainDocs = len(trainMatrix) #6
     numWords = len(trainMatrix[0]) #32
-    pAbusive = sum(trainCategory)/float(numTrainDocs)  #3/6=0.5
+    pAbusive = (sum(trainCategory)+1)/(float(numTrainDocs)+2)     #laplace smoothing
     p0Num = np.ones(numWords); p1Num = np.ones(numWords)     #change to ones() #32个1 Laplace smoothing
 #    print (p0Num,p1Num)
-    p0Denom = 2.0; p1Denom = 2.0                        #change to 2.0 laplace smoothing
+    p0Denom = numWords; p1Denom = numWords                        #change to numWords-32 laplace smoothing
     for i in range(numTrainDocs):#6
         if trainCategory[i] == 1:
             p1Num += trainMatrix[i]
