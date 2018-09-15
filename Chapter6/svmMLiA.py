@@ -43,7 +43,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
             fXi = float(np.multiply(alphas,labelMat).T*(dataMatrix*dataMatrix[i,:].T)) + b
             Ei = fXi - float(labelMat[i])#if checks if an example violates KKT conditions
             if ((labelMat[i]*Ei < -toler) and (alphas[i] < C)) or ((labelMat[i]*Ei > toler) and (alphas[i] > 0)):
-                j = selectJrand(i,m)
+                j = selectJrand(i,m);print("i",i,alphas[i]);print("j",j,alphas[j]);                                                                          #adddddddddddddddddddddddddddddddddddddddddddd
                 fXj = float(np.multiply(alphas,labelMat).T*(dataMatrix*dataMatrix[j,:].T)) + b
                 Ej = fXj - float(labelMat[j])
                 alphaIold = alphas[i].copy(); alphaJold = alphas[j].copy();
@@ -58,8 +58,8 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
                 if eta >= 0: print ("eta>=0"); continue
                 alphas[j] -= labelMat[j]*(Ei - Ej)/eta
                 alphas[j] = clipAlpha(alphas[j],H,L)
-                if (abs(alphas[j] - alphaJold) < 0.00001): print ("j not moving enough"); continue
-                alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j])#update i by the same amount as j
+                if (abs(alphas[j] - alphaJold) < 0.00001): print ("j not moving enough",alphas[j]);continue
+                alphas[i] += labelMat[j]*labelMat[i]*(alphaJold - alphas[j]);print("i",i,alphas[i]);print("j",j,alphas[j]);#update i by the same amount as j   #adddddddddddddddddddddddddddddddddddddddddd
                                                                         #the update is in the oppostie direction
                 b1 = b - Ei- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[i,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[i,:]*dataMatrix[j,:].T
                 b2 = b - Ej- labelMat[i]*(alphas[i]-alphaIold)*dataMatrix[i,:]*dataMatrix[j,:].T - labelMat[j]*(alphas[j]-alphaJold)*dataMatrix[j,:]*dataMatrix[j,:].T
