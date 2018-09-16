@@ -32,21 +32,44 @@ end=time.clock()
 total_time=end-start
 print("总耗时:"+str(total_time))
 
-#drawing
+#计算w
+Mw = np.matrix(np.zeros(np.shape(dataArr)[1]))
+for i in range (np.shape(alpha)[0]):
+	if alpha[i]>0:
+		Mw += np.multiply(labelArr[i]*alpha[i],dataArr[i])
+		
+w = Mw.T.tolist()
+print (w)
 
-x = list(np.mat(dataArr).T[0])
-y = list(np.mat(dataArr).T[1])
-fig = plt.figure()  
-ax1 = fig.add_subplot(111)  
-#设置标题  
-ax1.set_title('Scatter Plot')  
-#设置X轴标签  
-plt.xlabel('X')  
-#设置Y轴标签  
-plt.ylabel('Y')  
-#画散点图  
-ax1.scatter(x,y,c = 'r',marker = 'o')  
-#设置图标  
-plt.legend('x1')  
-#显示所画的图  
-plt.show()  
+
+#drawing
+n = np.shape(labelArr)[0] 
+xcord1 = []; ycord1 = []   
+xcord2 = []; ycord2 = []
+xcord3 = []; ycord3 = []
+xcord4 = []; ycord4 = []
+for i in range(n):
+	if int(labelArr[i])== 1:
+		if alpha[i]>0:
+			xcord3.append(dataArr[i][0]); ycord3.append(dataArr[i][1])
+		else:
+			xcord1.append(dataArr[i][0]); ycord1.append(dataArr[i][1])
+	else:
+		if alpha[i]>0:
+			xcord4.append(dataArr[i][0]); ycord4.append(dataArr[i][1])
+		else:
+			xcord2.append(dataArr[i][0]); ycord2.append(dataArr[i][1]) 
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.scatter(xcord1, ycord1, s=40, c='yellow', marker='s')
+ax.scatter(xcord2, ycord2, s=40, c='green')
+ax.scatter(xcord3, ycord3, s=50, c='red',marker='s')		
+ax.scatter(xcord4, ycord4, s=50, c='red')	
+
+x = np.arange(2.8, 6.5, 0.1)
+y1 = (b+(w[0][0])*x)/(-w[1][0])
+y = np.mat(y1).T
+ax.plot(x, y)
+plt.xlabel('X1'); plt.ylabel('X2');
+plt.savefig('SVMSMO.eps',dpi=2000)
+plt.show()
