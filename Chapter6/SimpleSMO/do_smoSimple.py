@@ -16,7 +16,7 @@ start=time.clock()
 
 dataArr,labelArr = svmMLiA.loadDataSet('testSet.txt')
 
-b,alpha = svmMLiA.smoSimple(dataArr,labelArr,0.6,0.001,80)
+b,alpha = svmMLiA.smoSimple(dataArr,labelArr,0.6,0.001,100)
 
 print (b)
 
@@ -61,15 +61,20 @@ for i in range(n):
 			xcord2.append(dataArr[i][0]); ycord2.append(dataArr[i][1]) 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.scatter(xcord1, ycord1, s=40, c='yellow', marker='s')
-ax.scatter(xcord2, ycord2, s=40, c='green')
-ax.scatter(xcord3, ycord3, s=50, c='red',marker='s')		
-ax.scatter(xcord4, ycord4, s=50, c='red')	
+ax.scatter(xcord1, ycord1, s=40, c='yellow', marker='s',label='class 1')
+ax.scatter(xcord2, ycord2, s=40, c='green',label='class -1')
+ax.scatter(xcord3, ycord3, s=40, c='red',marker='s',label='SV')		
+ax.scatter(xcord4, ycord4, s=40, c='red',label='SV')	
 
-x = np.arange(2.8, 6.5, 0.1)
+ax.legend(loc='best')
+
+x = np.arange(2.7, 6.6, 0.1)
 y1 = (b+(w[0][0])*x)/(-w[1][0])
 y = np.mat(y1).T
-ax.plot(x, y)
+ax.plot(x, y,'-')
 plt.xlabel('X1'); plt.ylabel('X2');
-plt.savefig('SVMSMO.eps',dpi=2000)
+plt.savefig('SMOSimple.eps',dpi=2000)
 plt.show()
+
+
+
