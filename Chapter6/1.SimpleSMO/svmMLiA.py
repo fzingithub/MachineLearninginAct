@@ -75,7 +75,7 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
 
 
 #by myself
-def calculateW(dataArr,labelArr,alpha,b):
+def calculateW(dataArr,labelArr,alpha):
 	Mw = np.matrix(np.zeros(np.shape(dataArr)[1]))
 	for i in range (np.shape(alpha)[0]):
 		if alpha[i]>0:
@@ -84,7 +84,7 @@ def calculateW(dataArr,labelArr,alpha,b):
 	return w
 
 #by myself
-def drawing(dataArr,labelArr,alpha,b):
+def drawing(dataArr,labelArr,alpha,w,b):
 	n = np.shape(labelArr)[0] 
 	xcord1 = []; ycord1 = []   
 	xcord2 = []; ycord2 = []
@@ -111,7 +111,7 @@ def drawing(dataArr,labelArr,alpha,b):
 	ax.legend(loc='best')
 
 	x = np.arange(2.7, 6.6, 0.1)
-	y1 = (b+(calculateW(dataArr,labelArr,alpha,b)[0][0])*x)/(-calculateW(dataArr,labelArr,alpha,b)[1][0])
+	y1 = (b+(calculateW(dataArr,labelArr,alpha)[0][0])*x)/(-calculateW(dataArr,labelArr,alpha)[1][0])
 	y = np.mat(y1).T
 	ax.plot(x, y,'-')
 	plt.xlabel('X1'); plt.ylabel('X2');
