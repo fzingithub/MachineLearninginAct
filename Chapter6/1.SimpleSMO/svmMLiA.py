@@ -8,7 +8,7 @@ E-mail：1194585271@qq.com
 """
 
 import  numpy as np
-from time import sleep
+import matplotlib.pyplot as plt
 
 def loadDataSet(fileName):
     dataMat = []; labelMat = []
@@ -72,3 +72,51 @@ def smoSimple(dataMatIn, classLabels, C, toler, maxIter):
         else: iter = 0
         print ("iteration number: %d" % iter)
     return b,alphas
+
+
+#by myself
+def calculateW(dataArr,labelArr,alpha,b):
+	Mw = np.matrix(np.zeros(np.shape(dataArr)[1]))
+	for i in range (np.shape(alpha)[0]):
+		if alpha[i]>0:
+			Mw += np.multiply(labelArr[i]*alpha[i],dataArr[i])
+	w = Mw.T.tolist()
+	return w
+
+#by myself
+def drawing(dataArr,labelArr,alpha,b):
+	n = np.shape(labelArr)[0] 
+	xcord1 = []; ycord1 = []   
+	xcord2 = []; ycord2 = []
+	xcord3 = []; ycord3 = []
+	xcord4 = []; ycord4 = []
+	for i in range(n):
+		if int(labelArr[i])== 1:
+			if alpha[i]>0:
+				xcord3.append(dataArr[i][0]); ycord3.append(dataArr[i][1])
+			else:
+				xcord1.append(dataArr[i][0]); ycord1.append(dataArr[i][1])
+		else:
+			if alpha[i]>0:
+				xcord4.append(dataArr[i][0]); ycord4.append(dataArr[i][1])
+			else:
+				xcord2.append(dataArr[i][0]); ycord2.append(dataArr[i][1]) 
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	ax.scatter(xcord1, ycord1, s=40, c='yellow', marker='s',label='class 1')
+	ax.scatter(xcord2, ycord2, s=40, c='green',label='class -1')
+	ax.scatter(xcord3, ycord3, s=40, c='red',marker='s',label='SV')		
+	ax.scatter(xcord4, ycord4, s=40, c='red',label='SV')	
+
+	ax.legend(loc='best')
+
+	x = np.arange(2.7, 6.6, 0.1)
+	y1 = (b+(calculateW(dataArr,labelArr,alpha,b)[0][0])*x)/(-calculateW(dataArr,labelArr,alpha,b)[1][0])
+	y = np.mat(y1).T
+	ax.plot(x, y,'-')
+	plt.xlabel('X1'); plt.ylabel('X2');
+	plt.savefig('SMOSimple.eps',dpi=2000)
+	plt.show()
+
+
+
