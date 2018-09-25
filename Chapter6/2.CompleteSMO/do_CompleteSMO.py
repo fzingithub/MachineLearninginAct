@@ -18,10 +18,10 @@ b,alpha = svmMLiA.smoP(dataArr,labelArr,0.6,0.001,40)
 
 print (b)
 
-print (alpha[alpha>0])
+print (alpha[alpha>0.00])
 
 for i in range(100):
-	if alpha[i]>0.0:
+	if alpha[i]>0.00:
 		print (i,dataArr[i],labelArr[i])
 		
 
