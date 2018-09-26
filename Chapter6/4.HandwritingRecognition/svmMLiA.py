@@ -16,21 +16,21 @@ Use Kernel VErsions to recognize handwriting
 def loadImages(dirName):
     from os import listdir
     hwLabels = []
-    trainingFileList = listdir(dirName)           #load the training set
-    m = len(trainingFileList)
+    trainingFileList = listdir(dirName)          #load the training set
+    m = len(trainingFileList);
     trainingMat = np.zeros((m,1024))
     for i in range(m):
-        fileNameStr = trainingFileList[i]
-        fileStr = fileNameStr.split('.')[0]     #take off .txt
-        classNumStr = int(fileStr.split('_')[0])
+        fileNameStr = trainingFileList[i]       #1_xx.txt  or  9_xx.txt
+        fileStr = fileNameStr.split('.')[0]     #take off .txt     1_xx or 9_xx
+        classNumStr = int(fileStr.split('_')[0])   #1 or 9
         if classNumStr == 9: hwLabels.append(-1)
         else: hwLabels.append(1)
         trainingMat[i,:] = img2vector('%s/%s' % (dirName, fileNameStr))
     return trainingMat, hwLabels   
 
-def img2vector(filename):
-    returnVect = np.zeros((1,1024))
-    fr = open(filename)
+def img2vector(filename):  #32x32 per feature
+    returnVect = np.zeros((1,1024))   # numpy array
+    fr = open(filename)   #_io.TextIOWrapper
     for i in range(32):
         lineStr = fr.readline()
         for j in range(32):
@@ -42,12 +42,12 @@ def testDigits(kTup=('rbf', 10)):
     b,alphas = smoP(dataArr, labelArr, 200, 0.0001, 10000, kTup)
     datMat=np.mat(dataArr); labelMat = np.mat(labelArr).transpose()
     svInd=np.nonzero(alphas.A>0)[0]
-    sVs=datMat[svInd] 
+    sVs=datMat[svInd] #support vector
     labelSV = labelMat[svInd];
     print ("there are %d Support Vectors" % np.shape(sVs)[0])
     m,n = np.shape(datMat)
     errorCount = 0
-    for i in range(m):
+    for i in range(m):#support vector only
         kernelEval = kernelTrans(sVs,datMat[i,:],kTup)
         predict=kernelEval.T * np.multiply(labelSV,alphas[svInd]) + b
         if np.sign(predict)!=np.sign(labelArr[i]): errorCount += 1
@@ -56,7 +56,7 @@ def testDigits(kTup=('rbf', 10)):
     errorCount = 0
     datMat=np.mat(dataArr); labelMat = np.mat(labelArr).transpose()
     m,n = np.shape(datMat)
-    for i in range(m):
+    for i in range(m):#support vector only
         kernelEval = kernelTrans(sVs,datMat[i,:],kTup)
         predict=kernelEval.T * np.multiply(labelSV,alphas[svInd]) + b
         if np.sign(predict)!=np.sign(labelArr[i]): errorCount += 1    
