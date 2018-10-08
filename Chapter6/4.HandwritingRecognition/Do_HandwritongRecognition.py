@@ -8,7 +8,7 @@ E-mail：1194585271@qq.com
 """
 
 import svmMLiA
-import numpy as np
+#import numpy as np
 import time 
 
 start=time.clock()
