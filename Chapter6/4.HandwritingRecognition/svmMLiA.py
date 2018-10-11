@@ -62,14 +62,14 @@ def testDigits(kTup=('rbf', 10)):
         if np.sign(predict)!=np.sign(labelArr[i]): errorCount += 1    
     print ("the test error rate is: %f" % (float(errorCount)/m) )
 
-def loadDataSet(fileName):
-    dataMat = []; labelMat = []
-    fr = open(fileName)
-    for line in fr.readlines():
-        lineArr = line.strip().split('\t')     #delete ' ',\n  split with '\t'
-        dataMat.append([float(lineArr[0]), float(lineArr[1])])
-        labelMat.append(float(lineArr[2]))
-    return dataMat,labelMat
+#def loadDataSet(fileName):
+#    dataMat = []; labelMat = []
+#    fr = open(fileName)
+#    for line in fr.readlines():
+#        lineArr = line.strip().split('\t')     #delete ' ',\n  split with '\t'
+#        dataMat.append([float(lineArr[0]), float(lineArr[1])])
+#        labelMat.append(float(lineArr[2]))
+#    return dataMat,labelMat
 
 def selectJrand(i,m):
     j=i #we want to select any J not equal to i

@@ -164,5 +164,5 @@ def drawing(dataArr,labelArr,alpha,w,b):
 	y = np.mat(y1).T
 	ax.plot(x, y,'-')
 	plt.xlabel('X1'); plt.ylabel('X2');
-	plt.savefig('SMOSimple.eps',dpi=2000)
+	plt.savefig('SMOComplete.eps',dpi=2000)
 	plt.show()
