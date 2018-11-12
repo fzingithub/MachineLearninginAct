@@ -130,7 +130,7 @@ def plotROC(predStrengths, classLabels):
 
 if __name__=='__main__':
     datArr,labelArr = loadDataSet('horseColicTraining2.txt')
-    classifierArray,aggClassEst = adaBoostTrainDS(datArr,labelArr,50)
+    classifierArray,aggClassEst = adaBoostTrainDS(datArr,labelArr,500)
     
     testArr,testLabelArr = loadDataSet('horseColicTest2.txt')
     prediction10 = adaClassify(testArr,classifierArray)
@@ -139,5 +139,6 @@ if __name__=='__main__':
     print (errArr[prediction10!=np.mat(testLabelArr).T].sum()/len(prediction10))
     
     
+    plotROC(aggClassEst.T,labelArr)
     
     
