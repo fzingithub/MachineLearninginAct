@@ -45,3 +45,4 @@ if __name__=='__main__':
     plt.subplot(222)
     plt.scatter(datMat2[:, 0], datMat2[:, 1], c = y_pred2)
     plt.title("Kmeans result2")
+    plt.savefig('KMeans.eps',dpi=1000)
